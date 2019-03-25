@@ -4,6 +4,7 @@ EC544 Networking the Physical World  <br/>
 Spring 2019 @ Boston University
 
 # Getting Started 
+Each team member should be able to reproduce each other's work. Please document carefully any necessary installation instructions so that everything is repeatable. 
 ## Hardware Needed
 BeagleBone Black Rev C <br/>
 Logictech C920 1080p USB Webcam <br/>
