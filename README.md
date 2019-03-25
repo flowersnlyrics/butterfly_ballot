@@ -10,12 +10,13 @@ BeagleBone Black Rev C <br/>
 Logictech C920 1080p USB Webcam <br/>
 Custom PCB <br/>
 TODO: Add schematic here<br/>
-## Installing Video4Linux 
+## Software Needed
+### Installing Video4Linux 
 Put instructions for installing Video4Linux on the BeagleBone here
-## Installing Ethereum
+### Installing Ethereum
 Put instructions for installing Ethereum on the BeagleBone here
-## Installing Linux Kernel Module Software
+### Installing Linux Kernel Module Software
 Put instructions for running/installing the LKM
-## Installing OpenCV and OpenFace 
+### Installing OpenCV and OpenFace 
 Put instrutions for installing OpenCV and OpenFace on the BeagleBone 
 
