@@ -11,6 +11,7 @@ Logictech C920 1080p USB Webcam <br/>
 Custom PCB <br/>
 TODO: Add schematic here<br/>
 ## Software Needed
+The folling programs need to be installed on the BeagleBone
 ### Installing Video4Linux 
 Put instructions for installing Video4Linux on the BeagleBone here
 ### Installing Ethereum
