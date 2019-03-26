@@ -6,15 +6,16 @@ Spring 2019 @ Boston University
 # Getting Started 
 Each team member should be able to reproduce each other's work. Please document carefully any necessary installation instructions so that everything is repeatable. 
 ## Hardware Needed
-BeagleBone Black Rev C <br/>
-Logictech C920 1080p USB Webcam <br/>
-Custom PCB <br/>
-TODO: Add schematic here<br/>
++ BeagleBone Black Rev C
++ Logictech C920 1080p USB Webcam 
++ Custom PCB for pushbuttons 
+TODO: Add schematic here
 ## Software Needed
 The folling programs need to be installed on the BeagleBone
 ### Installing Video4Linux 
 Put instructions for installing Video4Linux on the BeagleBone here
 ### Installing Ethereum
+Possible go [implementation](https://github.com/EthEmbedded/BBB-Eth-Install) for beaglebone black 
 Put instructions for installing Ethereum on the BeagleBone here
 ### Installing Linux Kernel Module Software
 Put instructions for running/installing the LKM
