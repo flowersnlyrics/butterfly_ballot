@@ -41,14 +41,12 @@ __NOTE__: If this doesn't work there are a couple things to try:
    ```console
    you@bbb:~$ pip install --upgrade setuptools
    ```
-
-
-### Installing Ethereum
+## Ethereum
 Possible go [implementation](https://github.com/EthEmbedded/BBB-Eth-Install) for beaglebone black 
 Put instructions for installing Ethereum on the BeagleBone here
-### Installing Linux Kernel Module Software
+## Linux Kernel Module 
 Put instructions for running/installing the LKM
-### Installing OpenCV and OpenFace 
+## OpenCV and OpenFace 
 Put instrutions for installing OpenCV and OpenFace on the BeagleBone 
 
 # Taking a Picture 
