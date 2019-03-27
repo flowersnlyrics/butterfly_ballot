@@ -51,6 +51,38 @@ Put instructions for running/installing the LKM
 ### Installing OpenCV and OpenFace 
 Put instrutions for installing OpenCV and OpenFace on the BeagleBone 
 
+# Taking a Picture 
+1. Hook up camera to USB port. Check if you can see the Logitech device
+   ```console
+   [you@bbb:~]$ lsusb
+   [you@bbb:~]$ ....
+   [you@bbb:~]$ /dev
+   should see /video0 in the file descriptor list 
+   ```
+2. Go to dir where usb_cam Github repo is installed
+   ```console
+   [you@bbb:~]$ cd usb_cam
+   [you@bbb:~/usb_cam]$ ....
+   [you@bbb:~/usb_cam]$ /dev
+   should see /video0 in the file descriptor list 
+   ```
+3. Build an executable. The source code in grabber.c opens up the USB webcam as a file descriptor using the V4L2 interface to allocate memory for buffers used to capture image data and poll socket descriptors to see if data is available. 
+   ```console
+   [you@bbb:~/usb_cam]$ make clean
+   [you@bbb:~/usb_cam]$ make
+   ``` 
+4. Take a picture! This will produce 19 images, the first will be out000.ppm and the last will be out019.ppm. 
+   ```console
+   [you@bbb:~/usb_cam]$ ./grabber.o
+   ```
+5. Convert the raw .ppm file to a JPEG so that you can actually see it. This example will produce out000.jpg.
+   ```console
+   [you@bbb:~/usb_cam]$ python img_ppm_2_jpg.py out000.ppm
+   ```
+6. TODO test xfering image thru SCP, haven't tried this 
+   ```console
+   [you@bbb:~/usb_cam]$ scp arembedded@192.168.1.222:/home/arembedded/usb_cam/out000.jpg
+   ```
 # Remoting into the BeagleBone Black
 + [Download](https://sourceforge.net/projects/vnc-tight/) TightVNC Server on your PC 
 + Download TightVNC Server on the BBB
