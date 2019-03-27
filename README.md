@@ -28,7 +28,9 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
 # Remoting into the BeagleBone Black
 + [Download](https://sourceforge.net/projects/vnc-tight/) TightVNC Server on your PC 
 + Download TightVNC Server on the BBB
-  - '''console sudo apt-get install tightvncserver '''
+  ```console
+     sudo apt-get install tightvncserver
+  ```
   - type tightvncserver in the terminal
   - make up passwords when prompted 
 + Info you'll need to connect from your PC 
