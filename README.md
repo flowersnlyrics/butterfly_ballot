@@ -60,9 +60,7 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
 2. Go to dir where usb_cam Github repo is installed
    ```console
    [you@bbb:~]$ cd usb_cam
-   [you@bbb:~/usb_cam]$ ....
-   [you@bbb:~/usb_cam]$ /dev
-   should see /video0 in the file descriptor list 
+   [you@bbb:~/usb_cam]$ 
    ```
 3. Build an executable. The source code in grabber.c opens up the USB webcam as a file descriptor using the V4L2 interface to allocate memory for buffers used to capture image data and poll socket descriptors to see if data is available. 
    ```console
