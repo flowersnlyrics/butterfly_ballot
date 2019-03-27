@@ -5,16 +5,42 @@ Spring 2019 @ Boston University
 
 # Getting Started 
 Each team member should be able to reproduce each other's work. Please document carefully any necessary installation instructions so that everything is repeatable. 
-## Hardware Needed
+## Hardware!
 + BeagleBone Black Rev C
 + Logictech C920 1080p USB Webcam 
 + Custom PCB for pushbuttons 
 TODO: Add schematic here
-## Software Needed
-The folling programs need to be installed on the BeagleBone
-### Video4Linux 
+
+## Prepare Video4Linux 
 Video4Linux comes with the most recent Debian image for BeagleBoneBlack! <br/>
-You still need to install some tools though. Run these commands:
+It's possible the Debian image is missing some components though (mine was) <br/>
+Run these commands to be safe: 
+```console
+  you@bbb:~$ sudo apt-get install v4l-utils
+  you@bbb:~$ sudo apt-get install libv4l-dev
+```
+## Download Repo for Capturing Images
+AR Embedded makes an easy to use repo to capture several images at a time <br/>
+```console
+  you@bbb:~$ git clone https://github.com/arembedded/usb_cam.git 
+```
+In order to use this we need to download the Python package Pillow (PIL) <br/>
+```console
+  you@bbb:~$ sudo pip install Pillow 
+```
+__NOTE__: If this doesn't work there are a couple things to try:
+1. Update pip
+   ```console
+    you@bbb:~$ sudo pip install -U pip
+   ```
+2. Upgrade distribute Python package (this fixed my problems)
+   ```console
+   you@bbb:~$ pip install --upgrade distribute
+   ```
+3. Upgrade core packages
+   ```console
+   you@bbb:~$ pip install --upgrade setuptools
+   ```
 
 
 ### Installing Ethereum
