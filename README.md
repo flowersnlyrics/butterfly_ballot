@@ -29,10 +29,11 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
 + [Download](https://sourceforge.net/projects/vnc-tight/) TightVNC Server on your PC 
 + Download TightVNC Server on the BBB
   ```console
-     sudo apt-get install tightvncserver
+     you@bbb:~$ # Install TightVNC Server
+     you@bbb:~$ sudo apt-get install tightvncserver
+     you@bbb:~$ # Run the program. The first time you will have to set up your passwords
+     you@bbb:~$ tightvncserver
   ```
-  - type tightvncserver in the terminal
-  - make up passwords when prompted 
 + Info you'll need to connect from your PC 
   - IP address: the default one for the BBB is 192.168.7.2 and you __need__ to use port 5901
   - my password is temppwd (kept from BBB temporary password) 
