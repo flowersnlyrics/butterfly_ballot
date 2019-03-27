@@ -93,7 +93,7 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
   you@bbb:~$ tightvncserver
   ```
 + Info you'll need to connect from your PC 
-  IP address
-  > the default one for the BBB is __192.168.7.2__ 
-  Also __need__ to use port 5901
-  > 192.168.7.2:5901
+  - IP address
+    > the default one for the BBB is __192.168.7.2__ 
+  - Also __need__ to use port 5901
+    > 192.168.7.2:__5901__
