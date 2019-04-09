@@ -122,5 +122,5 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
     > 192.168.7.2:__5901__
  
 # A Note on the File Structure
-- __checkpoints__ dir: Store all images with significant work done here. 
+- __checkpoints__ dir: Store all images with significant work done here (actual image will be stored on external harddrive since it's so big). 
 
