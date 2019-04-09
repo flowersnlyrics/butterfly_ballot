@@ -1,5 +1,7 @@
-# Team Butterfly Ballot Final Project
-Jennifer de Souza and Elise Weir <br/>
+# 2019_butterfly_ballot
+This project analyzes the antiquated technology still present in today's current electronic voting machines.  The goal is to create a secure voting machine that preserves the integrity of the vote and is easily scalable.  The proposed machine would prevent altering of results and voter fraud through computer vision authentication and a cryptographic ledger copied through the blockchain.  Protecting the vote is a matter of national security as our elections are the backbone of the American democracy. 
+##
+Jennifer de Souza 
 EC544 Networking the Physical World  <br/>
 Spring 2019 @ Boston University
 
@@ -7,9 +9,22 @@ Spring 2019 @ Boston University
 Each team member should be able to reproduce each other's work. Please document carefully any necessary installation instructions so that everything is repeatable. 
 ## Hardware!
 + BeagleBone Black Rev C
++ At least 64 GB (128 GB for Murphy) SD Card
 + Logictech C920 1080p USB Webcam 
 + Custom PCB for pushbuttons 
 TODO: Add schematic here
+
+## Setting up the Linux Distro
+__Distro name__: Debian 9.5 2018-10-07 4GB SD LXQT <br/>
+1. BeagleBoard.org has a ["Lastest Firmware Images"](https://beagleboard.org/latest-images) page. For consistency all  team members should download the latest image with a graphical user interface. To download the [Debian 9.5 2018-10-07 4GB SD LXQT](http://debian.beagleboard.org/images/bone-debian-9.5-lxqt-armhf-2018-10-07-4gb.img.xz) image click that hyperlink and the image still start downloading. 
+2. Use [Etcher](https://www.balena.io/etcher/) to put that image onto a __128 GB__ SD Card. 
+3. To boot from that image hold down the USER/BOOT button while plugging in power (whether it be the 5V jack or the USB port). 
+4. It is necessary for this project that the file system be expanded (and [recommended](https://elinux.org/Beagleboard:BeagleBoneBlack) in the Getting Started guide). Expand the file system on the BBB image to use all memory available on the SD Card. I recommend the [automated way](https://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD) detailed in this document. 
+5. For sanity's sake I also ran the below commands
+   ```console
+   you@bbb:~$ sudo apt-get update
+   you@bbb:~$ sudo apt-get dist-upgrade
+   ```
 
 ## Prepare Video4Linux 
 Video4Linux comes with the most recent Debian image for BeagleBoneBlack! <br/>
@@ -41,9 +56,25 @@ __NOTE__: If this doesn't work there are a couple things to try:
    ```console
    you@bbb:~$ pip install --upgrade setuptools
    ```
-## Ethereum
-Possible go [implementation](https://github.com/EthEmbedded/BBB-Eth-Install) for beaglebone black 
-Put instructions for installing Ethereum on the BeagleBone here
+## Geth Installation 
+1. Before starting we need to check the status of the Go library. The recommended image for the Beaglebone Black does not have the most recent version of go, which is a requirement for installing geth. The recommended image is anything above Go 1.9, but we are running Go 1.7. You can check this with the `go version` command. 
+2. To uninstall our current version of go we need to delete the `/usr/local/go` directory. I also ran an app to purge go remnants. 
+ ```console
+ [you@bbb:~]$ sudo rm -rf /usr/local/go
+ [you@bbb:~]$ sudo apt-get purge go
+ ```
+3. Now download the most recent image of Go (1.12 in tar.gz format) to the `/usr/local` directory.
+4. Untar the .tar.gz with the following command and confirm version by running the `go version` command
+ ```console
+ [you@bbb:~]$ sudo tar -C usr/local -xvf <name_of_your_go_tar_gz>.gz
+ [you@bbb:~]$ go version
+ ```
+5. Since we purged go in Step 1, we need to re-init the Go Environment. Check out [Step 2](https://tecadmin.net/install-go-on-debian/) in this guide.  At the very minimum update the `PATH` and `GOROOT` environment variables. 
+6. Follow directions for cloning the [BBB-Eth-Install github repository](https://github.com/EthEmbedded/BBB-Eth-Install)
+ 
+ ## Running the Blockchain for the first time with Geth
+ Stay tuned :) 
+
 ## Linux Kernel Module 
 Put instructions for running/installing the LKM
 ## OpenCV and OpenFace 
@@ -67,7 +98,7 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
    [you@bbb:~/usb_cam]$ make clean
    [you@bbb:~/usb_cam]$ make
    ``` 
-4. Take a picture! This will produce 19 images, the first will be out000.ppm and the last will be out019.ppm. 
+4. Take a picture! This will produce 20 images, the first will be out000.ppm and the last will be out019.ppm. 
    ```console
    [you@bbb:~/usb_cam]$ ./grabber.o
    ```
@@ -93,3 +124,7 @@ Put instrutions for installing OpenCV and OpenFace on the BeagleBone
     > the default one for the BBB is __192.168.7.2__ 
   - Also __need__ to use port 5901
     > 192.168.7.2:__5901__
+ 
+# A Note on the File Structure
+- __checkpoints__ dir: Store all images with significant work done here. 
+
