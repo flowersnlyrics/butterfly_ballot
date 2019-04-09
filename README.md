@@ -1,9 +1,5 @@
-# 2019_butterfly_ballot
+# Butterfly Ballot - A Secure Approach to Electronic Voting Machines
 This project analyzes the antiquated technology still present in today's current electronic voting machines.  The goal is to create a secure voting machine that preserves the integrity of the vote and is easily scalable.  The proposed machine would prevent altering of results and voter fraud through computer vision authentication and a cryptographic ledger copied through the blockchain.  Protecting the vote is a matter of national security as our elections are the backbone of the American democracy. 
-##
-Jennifer de Souza 
-EC544 Networking the Physical World  <br/>
-Spring 2019 @ Boston University
 
 # Getting Started 
 Each team member should be able to reproduce each other's work. Please document carefully any necessary installation instructions so that everything is repeatable. 
