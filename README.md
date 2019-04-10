@@ -71,14 +71,10 @@ __NOTE__: If this doesn't work there are a couple things to try:
  [you@bbb:~]$ cd ~/go-ethereum/build/bin
  [you@bbb:~]$ cd geth --rinkeby --syncmode=light --cache=96 console
  ```
-
 8. I would sit and wait until the geth client tells you the block synchronization has started. 
 9. We can leave it to download and come back periodically to make sure its going okay since we enabled the console (`console`) when running the geth executable. Two of my fave commands are `eth.syncing` which should return `true` and `eth.blockNumber` which will return the current # of the block the client is downloading. 
 10. The client will keep running even after synchronization is over (keeping blocks current is a full time job). Run the `eth.syncing` command if you think it's done (maybe after running it overnight or something). If that command returns `false` then you are done with synchronization and geth is all setup. 
  
- ## Running the Blockchain for the first time with Geth
- Stay tuned :) 
-
 ## Linux Kernel Module 
 Put instructions for running/installing the LKM
 ## OpenCV and OpenFace 
