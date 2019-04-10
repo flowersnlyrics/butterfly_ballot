@@ -21,7 +21,6 @@ __Distro name__: Debian 9.5 2018-10-07 4GB SD LXQT <br/>
    you@bbb:~$ sudo apt-get update
    you@bbb:~$ sudo apt-get dist-upgrade
    ```
-
 ## Prepare Video4Linux 
 Video4Linux comes with the most recent Debian image for BeagleBoneBlack! <br/>
 It's possible the Debian image is missing some components though (mine was) <br/>
@@ -68,10 +67,11 @@ __NOTE__: If this doesn't work there are a couple things to try:
 5. Since we purged go in Step 1, we need to re-init the Go Environment. Check out [Step 2](https://tecadmin.net/install-go-on-debian/) in this guide.  At the very minimum update the `PATH` and `GOROOT` environment variables. 
 6. Follow Steps 1-7 for cloning the [BBB-Eth-Install github repository](https://github.com/EthEmbedded/BBB-Eth-Install) to install geth on the Beaglebone black. 
 7. *Finally* we need to start the geth client. The first time the client runs it takes ~one day for the blockchain to synchronize. 
-```@console
-[you@bbb:~]$ cd ~/go-ethereum/build/bin
-[you@bbb:~]$ cd geth --rinkeby --syncmode=light --cache=96 console
-```
+ ```console
+ [you@bbb:~]$ cd ~/go-ethereum/build/bin
+ [you@bbb:~]$ cd geth --rinkeby --syncmode=light --cache=96 console
+ ```
+
 8. I would sit and wait until the geth client tells you the block synchronization has started. 
 9. We can leave it to download and come back periodically to make sure its going okay since we enabled the console (`console`) when running the geth executable. Two of my fave commands are `eth.syncing` which should return `true` and `eth.blockNumber` which will return the current # of the block the client is downloading. 
 10. The client will keep running even after synchronization is over (keeping blocks current is a full time job). Run the `eth.syncing` command if you think it's done (maybe after running it overnight or something). If that command returns `false` then you are done with synchronization and geth is all setup. 
