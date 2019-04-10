@@ -52,7 +52,7 @@ __NOTE__: If this doesn't work there are a couple things to try:
    ```console
    you@bbb:~$ pip install --upgrade setuptools
    ```
-## Geth Installation 
+## Geth Installation and Running the Client for the First Time 
 1. Before starting we need to check the status of the Go library. The recommended image for the Beaglebone Black does not have the most recent version of go, which is a requirement for installing geth. The recommended image is anything above Go 1.9, but we are running Go 1.7. You can check this with the `go version` command. 
 2. To uninstall our current version of go we need to delete the `/usr/local/go` directory. I also ran an app to purge go remnants. 
  ```console
@@ -66,7 +66,15 @@ __NOTE__: If this doesn't work there are a couple things to try:
  [you@bbb:~]$ go version
  ```
 5. Since we purged go in Step 1, we need to re-init the Go Environment. Check out [Step 2](https://tecadmin.net/install-go-on-debian/) in this guide.  At the very minimum update the `PATH` and `GOROOT` environment variables. 
-6. Follow directions for cloning the [BBB-Eth-Install github repository](https://github.com/EthEmbedded/BBB-Eth-Install)
+6. Follow Steps 1-7 for cloning the [BBB-Eth-Install github repository](https://github.com/EthEmbedded/BBB-Eth-Install) to install geth on the Beaglebone black. 
+7. *Finally* we need to start the geth client. The first time the client runs it takes ~one day for the blockchain to synchronize. 
+```@console
+[you@bbb:~]$ cd ~/go-ethereum/build/bin
+[you@bbb:~]$ cd geth --rinkeby --syncmode=light --cache=96 console
+```
+8. I would sit and wait until the geth client tells you the block synchronization has started. 
+9. We can leave it to download and come back periodically to make sure its going okay since we enabled the console (`console`) when running the geth executable. Two of my fave commands are `eth.syncing` which should return `true` and `eth.blockNumber` which will return the current # of the block the client is downloading. 
+10. The client will keep running even after synchronization is over (keeping blocks current is a full time job). Run the `eth.syncing` command if you think it's done (maybe after running it overnight or something). If that command returns `false` then you are done with synchronization and geth is all setup. 
  
  ## Running the Blockchain for the first time with Geth
  Stay tuned :) 
