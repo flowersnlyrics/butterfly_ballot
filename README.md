@@ -58,18 +58,26 @@ __NOTE__: If this doesn't work there are a couple things to try:
  [you@bbb:~]$ sudo rm -rf /usr/local/go
  [you@bbb:~]$ sudo apt-get purge go
  ```
-3. Now download the most recent image of Go (1.12 in tar.gz format) to the `/usr/local` directory.
+__NOTE__: If you do run in to issues then you may also want to try the following commands to completely wipe the installed version of go 
+```console
+[you@bbb:~]$ sudo apt-get purge golang
+[you@bbb:~]$ sudo apt-get purge golang*
+```
+3. Now download the most [recent](https://golang.org/dl/) image of Go for Arm and tar(1.12 in tar.gz format) to the `/usr/local` directory.
+> curl -O https://storage.googleapis.com/golang/go1.12.linux-armv6l.tar.gz
 4. Untar the .tar.gz with the following command and confirm version by running the `go version` command
  ```console
  [you@bbb:~]$ sudo tar -C usr/local -xvf <name_of_your_go_tar_gz>.gz
  [you@bbb:~]$ go version
  ```
-5. Since we purged go in Step 1, we need to re-init the Go Environment. Check out [Step 2](https://tecadmin.net/install-go-on-debian/) in this guide.  At the very minimum update the `PATH` and `GOROOT` environment variables. 
+5. Since we purged go in Step 1, we need to re-init the Go Environment. Check out [Step 2](https://tecadmin.net/install-go-on-debian/) in this guide.  At the very minimum [update](https://medium.com/@boonsanti/golang-on-beaglebone-black-beaglebone-green-debian-gnu-linux-8-d1834c377c56) the `PATH` and `GOROOT` environment variables. 
 6. Follow Steps 1-7 for cloning the [BBB-Eth-Install github repository](https://github.com/EthEmbedded/BBB-Eth-Install) to install geth on the Beaglebone black. 
+__NOTE__: The ./geth-installer script will try to redownload an older version of golang1.7, even if another version was previously installed. To remove this confliction go to the ./geth-installer.sh and remove the reference to golang in the line below. Once removed, the installation should work without any additional problems. [Yayy](https://www.youtube.com/watch?v=xUMUEaaqlWA)
+> sudo apt-get -y install dphys-swapfile build-essential libgmp3-dev golang git python curl
 7. *Finally* we need to start the geth client. The first time the client runs it takes ~one day for the blockchain to synchronize. 
  ```console
  [you@bbb:~]$ cd ~/go-ethereum/build/bin
- [you@bbb:~]$ cd geth --rinkeby --syncmode=light --cache=96 console
+ [you@bbb:~]$ .geth --rinkeby --syncmode=full --cache=96 console
  ```
 8. I would sit and wait until the geth client tells you the block synchronization has started. 
 9. We can leave it to download and come back periodically to make sure its going okay since we enabled the console (`console`) when running the geth executable. Two of my fave commands are `eth.syncing` which should return `true` and `eth.blockNumber` which will return the current # of the block the client is downloading. 
