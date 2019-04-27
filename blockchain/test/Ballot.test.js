@@ -53,19 +53,47 @@ describe('Ballot Contract', () => {
     // Any time someone enters their vote, make sure 
     // they're added to the voter array 
     //
-    /*it('When account votes, should be added to voters array', async() => {
-        await ballot.methods.enter().send({
-            from: accounts[0], 
-            value: web3.utils.toWei('0.02', 'ether') 
+    it('When an account votes, should be added to voters array', async() => {
+        
+        await ballot.methods.submitVote().send({
+            from: accounts[0] 
         }); 
 
-        const players = await ballot.methods.getPlayers().call({
+        voters = await ballot.methods.getVoters().call({
             from: accounts[0]
         });
         
-        assert.equal(accounts[0], players[0]); // should be, is 
-        assert.equal(1, players.length); 
-    });*/
+        assert.equal(voters[0], accounts[0]); // is, should be 
+        assert.equal(1, voters.length);       // only one person has voted  
+    });
+
+    //
+    // TEST #4
+    // Make sure that multiple (different) people can vote 
+    //
+    it('Multiple accounts should be able to vote', async() => {
+        
+        await ballot.methods.submitVote().send({
+            from: accounts[0] 
+        }); 
+        
+        await ballot.methods.submitVote().send({
+            from: accounts[1] 
+        });
+
+        await ballot.methods.submitVote().send({
+            from: accounts[2] 
+        }); 
+
+        voters = await ballot.methods.getVoters().call({
+            from: accounts[0]
+        });
+        
+        assert.equal(voters[0], accounts[0]); // is, should be 
+        assert.equal(voters[1], accounts[1]); // is, should be 
+        assert.equal(voters[2], accounts[2]); // is, should be 
+        assert.equal(3, voters.length);       // make sure 3 voters have been registered  
+    });
     
     //
     // TEST #4
