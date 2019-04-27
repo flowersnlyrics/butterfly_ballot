@@ -28,6 +28,7 @@ describe('Ballot Contract', () => {
     //
     // TEST #1
     // Make sure this schtuff actually deploys a contract
+    // (by checking if the contract instantiation has an addr) 
     //
     it('Ballot.sol instantiation is deployed correctly', () => {
         assert.ok(ballot.options.address);
@@ -38,6 +39,14 @@ describe('Ballot Contract', () => {
     // Make sure that the person who deploys the contract
     // is the voteKeeper
     //
+    it('Acct. that deploys Ballot contract is the Vote Keeper', async() => {
+       const currVoteKeeper = await ballot.methods.voteKeeper().call({
+           from: accounts[0]
+       });
+        
+       assert.equal(currVoteKeeper, accounts[0]); //is, should be
+       
+    }); 
 
     //
     // TEST #3
