@@ -26,18 +26,34 @@ contract Ballot {
     // Here we push the user's vote 
     // and also check that this voter hasn't voted before 
     //
-    function submitVote() public payable {
+    function submitVote(uint cand_num) public payable {
         require(!hasAlreadyVoted(msg.sender)); 
         // put in voters array 
         voters.push(msg.sender); 
+        candidates[cand_num].votes = candidates[cand_num].votes + 1; 
     }
     
     //
     // Submit a candidate to the ballot for htis position
     //
-    function submitCandidate(string name) public {
+    function createCandidate(string _name) public {
         require(msg.sender == voteKeeper); 
         
+        var candidate = candidates[numCandidates]; // numCandidates is the key, bind candidate to candidates mapping 
+        
+        candidate.name = _name; 
+        candidate.votes = 0; 
+        
+        candidateIdxs.push(numCandidates) - 1; // push the new candidate index to the array of indexes 
+        numCandidates = numCandidates + 1; 
+    }
+
+    function getCandidates() view public returns (uint[]){
+        return candidateIdxs;
+    }
+    
+    function getCandidate(uint cand_num) view public returns (string, uint){
+        return(candidates[cand_num].name, candidates[cand_num].votes ); 
     }
     
     

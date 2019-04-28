@@ -19,7 +19,7 @@ beforeEach(async () => {
 
     ballot = await new web3.eth.Contract(JSON.parse(interface))
         .deploy({data: bytecode, arguments: ['President']})
-        .send({from: accounts[0], gas: '1000000' });
+        .send({from: accounts[0], gas: '4000000' });
 });
 
 
@@ -57,7 +57,16 @@ describe('Ballot Contract', () => {
     //
     it('When an account votes, should be added to voters array', async() => {
         
-        await ballot.methods.submitVote().send({
+      //balance = await web3.eth.getBalance(accounts[0]);
+      //console.log(balance); 
+        
+       // need to create a candidate for person to vote for 
+       await ballot.methods.createCandidate("Al Gore").send({
+           from: accounts[0],
+           gas: '3000000'
+       });
+        
+        await ballot.methods.submitVote(0).send({
             from: accounts[0] 
         }); 
 
@@ -75,15 +84,21 @@ describe('Ballot Contract', () => {
     //
     it('Multiple accounts should be able to vote', async() => {
         
-        await ballot.methods.submitVote().send({
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("Al Gore").send({
+           from: accounts[0],
+           gas: '3000000'
+        });
+        
+        await ballot.methods.submitVote(0).send({
             from: accounts[0] 
         }); 
         
-        await ballot.methods.submitVote().send({
+        await ballot.methods.submitVote(0).send({
             from: accounts[1] 
         });
 
-        await ballot.methods.submitVote().send({
+        await ballot.methods.submitVote(0).send({
             from: accounts[2] 
         }); 
 
@@ -103,12 +118,18 @@ describe('Ballot Contract', () => {
     //
     it('Make sure one account can only vote once', async() => {
         
-        await ballot.methods.submitVote().send({
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("Al Gore").send({
+           from: accounts[0],
+           gas: '3000000'
+        });
+        
+        await ballot.methods.submitVote(0).send({
             from: accounts[0] 
         }); 
         
         try {
-            await ballot.methods.submitVote().send({
+            await ballot.methods.submitVote(0).send({
                 from: accounts[0] 
             });
             
@@ -132,7 +153,7 @@ describe('Ballot Contract', () => {
        assert.equal(currVoteKeeper, accounts[0]); //is, should be
     
        try {
-            await ballot.methods.submitCandidate().send({
+            await ballot.methods.createCandidate().send({
                 from: accounts[1] 
             });
             
