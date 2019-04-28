@@ -33,7 +33,8 @@ class App extends Component{
             position:'',
             items: [],
             text: '',
-            vote: ''
+            vote: '',
+            winner: 'no winner picked'
         }
     }
 
@@ -141,9 +142,11 @@ class App extends Component{
            });
 
            this.setState({addCandMsg: 'Candidate added, thank you vote keeper!'});
+        
+           this.setState({statusMsg: 'Candidate List updated!'});
          } catch(e){
              this.setState({addCandMsg: 'You are not the vote keeper! Candidate not added!!'});
-
+             this.setState({statusMsg: 'Candidate List the same!'});
          }
 
          this.setState(state => ({
@@ -151,7 +154,6 @@ class App extends Component{
                         text: ''
          }));
 
-         this.setState({statusMsg: 'Candidate List updated!'});
      }
 
      handleVote = async event => {
@@ -210,6 +212,20 @@ class App extends Component{
                   Add Candidate #{this.state.items.length + 1}
                 </button>
                 <h4>{this.state.addCandMsg}</h4>
+              </form>
+              <h3>Want to pick a winner?</h3>
+              <form onSubmit={this.handlePickWinner}>
+                <label htmlFor="new-winner">
+                    Click 'End Ballot' to pick a winner!
+                </label>
+                <input
+                    id="new-winner"
+                    onChange={this.handleWinnerChange}
+                    value={this.state.winner}
+                />
+                <button>
+                    End Ballot
+                </button>
               </form>
             </div>
             <hr />
