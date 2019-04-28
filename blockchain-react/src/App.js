@@ -118,11 +118,11 @@ class App extends Component{
             <hr />
             <h1>{this.state.statusMsg}</h1>
             <div>
-              <h3>TODO</h3>
+              <h3>Want to add a candidate?</h3>
               <TodoList items={this.state.items} />
               <form onSubmit={this.handleSubmit}>
                 <label htmlFor="new-todo">
-                  What needs to be done?
+                    New Candidate:    
                 </label>
                 <input
                   id="new-todo"
@@ -130,7 +130,7 @@ class App extends Component{
                   value={this.state.text}
                 />
                 <button>
-                  Add #{this.state.items.length + 1}
+                  Add Candidate #{this.state.items.length + 1}
                 </button>
               </form>
             </div> 
