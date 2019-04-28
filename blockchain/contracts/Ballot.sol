@@ -4,6 +4,7 @@ contract Ballot {
     
     address public voteKeeper; // using public or private enforces no security
     address[] public voters; 
+    string [] public winners; 
     
     string public position; 
     uint   public numCandidates; 
@@ -73,13 +74,24 @@ contract Ballot {
     // public or private not used to enforce security
     // require used to enforce security 
     function pickWinner() public restricted{
-        //require(msg.sender == manager); // no one can call this function except the person who created the contract 
+        require(msg.sender == voteKeeper); // no one can call this function except the person who created the contract 
+      
+        uint win_idx = 0;
+        uint i = 0; 
         
-        //uint index = random() % voters.length; 
-        //voters[index].transfer(this.balance); // need to send ether represented in contract 
-        // might try to reset contract after picking a winner, infinite series of lotteries
-        // empty out list of addresses
-        voters = new address[](0); // new brand new dymanic array, (0) initial size of 0
+        for(i = 0; i < numCandidates; i++){
+            if(candidates[i].votes >= candidates[win_idx].votes){
+                win_idx = i; 
+            }
+        }
+        
+        winners.push(candidates[win_idx].name) - 1; 
+        
+        for(i = 0; i < numCandidates; i++){
+            if(candidates[i].votes == candidates[win_idx].votes){
+                winners.push(candidates[i].name); 
+            }
+        }
     }
     
     modifier restricted(){
@@ -91,6 +103,7 @@ contract Ballot {
         return voters; 
     }
 }
+
 
 
 
