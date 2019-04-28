@@ -10,13 +10,15 @@ const {interface, bytecode} = require('../compile'); // {} because we're requiri
 let ballot; 
 let accounts; 
 
-// deploy contract and get list of all of our accounts
-// before every test
+//
+// Deploy contract and get list of all of our accounts
+// (before every test)
+//
 beforeEach(async () => {
     accounts = await web3.eth.getAccounts(); 
 
     ballot = await new web3.eth.Contract(JSON.parse(interface))
-        .deploy({data: bytecode})
+        .deploy({data: bytecode, arguments: ['President']})
         .send({from: accounts[0], gas: '1000000' });
 });
 
@@ -93,6 +95,53 @@ describe('Ballot Contract', () => {
         assert.equal(voters[1], accounts[1]); // is, should be 
         assert.equal(voters[2], accounts[2]); // is, should be 
         assert.equal(3, voters.length);       // make sure 3 voters have been registered  
+    });
+
+    //
+    // TEST #5
+    // Make sure that the same person doesn't vote twice
+    //
+    it('Make sure one account can only vote once', async() => {
+        
+        await ballot.methods.submitVote().send({
+            from: accounts[0] 
+        }); 
+        
+        try {
+            await ballot.methods.submitVote().send({
+                from: accounts[0] 
+            });
+            
+            assert(false); // test fails
+        }catch(error)
+        {
+            assert(error); // supposed to throw an error, test passes
+        }
+    });
+    
+    //
+    // TEST #6
+    // Make sure that only voteKeeper can add a candidate to 
+    // the ballot
+    //
+    it('Only Votekeeper adds candidates to ballot', async() => {
+       const currVoteKeeper = await ballot.methods.voteKeeper().call({
+           from: accounts[0]
+       });
+        
+       assert.equal(currVoteKeeper, accounts[0]); //is, should be
+    
+       try {
+            await ballot.methods.submitCandidate().send({
+                from: accounts[1] 
+            });
+            
+            assert(false); // test fails: rando submitted candidate
+        }catch(error)
+        {
+            assert(error); // supposed to throw an error, test passes
+        } 
+       
     });
     
     //

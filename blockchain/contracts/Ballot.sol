@@ -1,11 +1,25 @@
 pragma solidity ^0.4.17; 
 
 contract Ballot {
+    
     address public voteKeeper; // using public or private enforces no security
     address[] public voters; 
     
-    function Ballot() public {
+    string public position; 
+    uint   public numCandidates; 
+    
+    struct Candidate {
+        string name; 
+        uint   votes; 
+    }
+    
+    mapping(uint => Candidate) candidates; 
+    uint[] public candidateIdxs; 
+    
+    function Ballot(string pos) public {
+        position = pos; 
         voteKeeper = msg.sender; 
+        numCandidates = 0; 
     }
     
     // 
@@ -18,6 +32,18 @@ contract Ballot {
         voters.push(msg.sender); 
     }
     
+    //
+    // Submit a candidate to the ballot for htis position
+    //
+    function submitCandidate(string name) public {
+        require(msg.sender == voteKeeper); 
+        
+    }
+    
+    
+    //
+    // Check is user has already voted 
+    //
     function hasAlreadyVoted(address addr) private view returns (bool){
         for(uint i = 0; i < voters.length; i++){
             if(addr == voters[i]){

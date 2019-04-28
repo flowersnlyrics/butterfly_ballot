@@ -26,7 +26,7 @@ const deploy = async () => {
     
     // interface is API 
     const result = await new web3.eth.Contract(JSON.parse(interface))
-        .deploy({data:bytecode})
+        .deploy({data:bytecode, arguments: ['President']})
         .send({gas:'1000000', from: accounts[0]});
 
     // we need the interface (the ABI: translates JS to bytecode)
