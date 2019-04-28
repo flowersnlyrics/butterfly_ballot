@@ -85,9 +85,23 @@ class App extends Component{
          for (var i = 0; i < candidateIdxs.length; i++){
              if(this.state.vote[0] == candidateIdxs[i]){
                  this.setState({vote: this.state.vote[0]});
-                 // TODO delete after debugging
-                 this.setState({voteMsg: 'Yay that\'s a correct value!'}); 
+                 this.setState({voteMsg: 'Processing your vote...check Ethreum Console!'});
+                 
+                 // user wants their vote to be processed
+                 const accounts = await web3.eth.getAccounts(); 
+                 this.setState({statusMsg:'Waiting on vote transaction success...'});
+                 
+                 await ballot.methods.submitVote(this.state.vote).send({
+                    from: accounts[0],
+                    gas: '3000000'
+                 });
+                    
+                 this.setState({voteMsg: 'Your vote has been processed!'});
+                 this.setState({statusMsg: 'Transaction success, thank you for voting!'});
+                 
                  return; 
+
+
              }
          }
 
@@ -109,7 +123,6 @@ class App extends Component{
          const accounts = await web3.eth.getAccounts(); 
          
          this.setState({statusMsg:'Waiting on transaction success...'});
-
         
          await ballot.methods.createCandidate(this.state.text).send({
             from: accounts[0],
