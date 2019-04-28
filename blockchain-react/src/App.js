@@ -174,7 +174,9 @@ class App extends Component{
 
          const accounts = await web3.eth.getAccounts(); 
          
+        
          this.setState({statusMsg:'Waiting on transaction success...'});
+         this.setState({addCandMsg:'Sending vote keeper\'s candidate to ballot contract...'});
         
          try{
              await ballot.methods.createCandidate(this.state.text).send({
@@ -183,7 +185,6 @@ class App extends Component{
            });
 
            this.setState({addCandMsg: 'Candidate added, thank you vote keeper!'});
-        
            this.setState({statusMsg: 'Candidate List updated!'});
          } catch(e){
              this.setState({addCandMsg: 'You are not the vote keeper! Candidate not added!!'});
