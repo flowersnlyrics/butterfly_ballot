@@ -112,6 +112,8 @@ class App extends Component{
                 </div>
                 <button>Enter</button>
             </form>
+            <hr />
+            <h1>{this.state.statusMsg}</h1>
           </div>
       );
     }
