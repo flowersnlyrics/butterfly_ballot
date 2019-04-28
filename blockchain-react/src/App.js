@@ -38,28 +38,20 @@ class App extends Component{
         const position   = await ballot.methods.position().call();
         const candidateIdxs = await ballot.methods.getCandidates().call();
         
-        // TODO delete
+        for(var i = 0; i < candidateIdxs.length; i++){
+            
+            var A = await ballot.methods.getCandidate(candidateIdxs[i]).call(); 
+            
+            var newItem = {
+                text: candidateIdxs[i] + " : " + A[0], 
+                id: Date.now()
+            };
 
-        //const players = await lottery.methods.getPlayers().call(); 
-        //const balance = await web3.eth.getBalance(lottery.options.address); 
-        //
-        /////this.setState({manager:manager}); 
-        ////we should set our manager with something to start
-        //this.setState({manager, players, balance}); //use 2015 syntax
-        
-         for(var i = 0; i < candidateIdxs.length; i++){
-             
-             var A = await ballot.methods.getCandidate(candidateIdxs[i]).call(); 
-             
-             var newItem = {
-                 text: candidateIdxs[i] + " : " + A[0], 
-                 id: Date.now()
-             };
             this.setState(state => ({
-                            items: state.items.concat(newItem),
-                            text: ''
-             }));
-         }
+                           items: state.items.concat(newItem),
+                           text: ''
+            }));
+        }
 
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
         this.setState({position:position});
@@ -91,7 +83,7 @@ class App extends Component{
              return;
          }
          const newItem = {
-             text: this.state.text, 
+             text: this.state.items.length + " : " + this.state.text, 
              id: Date.now()
          };
           this.setState(state => ({
