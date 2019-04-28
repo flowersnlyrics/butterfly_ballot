@@ -34,7 +34,8 @@ class App extends Component{
             items: [],
             text: '',
             vote: '',
-            winner: 'no winner picked'
+            winner: 'no winner picked',
+            ballot_addr: ''
         }
     }
 
@@ -42,7 +43,8 @@ class App extends Component{
         const voteKeeper = await ballot.methods.voteKeeper().call();
         const position   = await ballot.methods.position().call();
         const candidateIdxs = await ballot.methods.getCandidates().call();
-        
+        const ballot_addr = await ballot.options.address; 
+
         for(var i = 0; i < candidateIdxs.length; i++){
             
             var A = await ballot.methods.getCandidate(candidateIdxs[i]).call(); 
@@ -60,7 +62,7 @@ class App extends Component{
 
         const winners = await ballot.methods.getWinners().call(); 
         
-      
+        this.setState({ballot_addr:ballot_addr}); 
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
         this.setState({position:position});
         this.setState({candidateIdxs:candidateIdxs});
@@ -214,6 +216,8 @@ class App extends Component{
           <div>
             <h2>Voting Contract for {this.state.position}</h2>
             <p> This ballot is managed by {this.state.voteKeeper}
+            </p>
+            <p> This ballot has a contract address of {this.state.ballot_addr}
             </p>
             <hr />
                 <h2> Voter Console </h2>
