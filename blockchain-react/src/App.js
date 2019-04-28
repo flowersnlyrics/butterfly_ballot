@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import TodoList from './TodoList.js';
 
 //not working with the library but the file that we made
 import web3 from './web3';
@@ -27,7 +28,9 @@ class App extends Component{
             voteKeeper:'',
             candidateIdxs: [],
             A: '', 
-            position:''
+            position:'',
+            items: [],
+            text: ''
         }
     }
 
@@ -66,6 +69,26 @@ class App extends Component{
          this.setState({statusMsg: 'Candidate List updated!'});
      };
 
+     handleChange = async event => {
+         this.setState({ text: event.target.value });
+     }
+
+     handleSubmit = async event => {
+         event.preventDefault(); 
+         if(!this.state.text.length){
+             return;
+         }
+         const newItem = {
+             text: this.state.text, 
+             id: Date.now()
+         };
+          this.setState(state => ({
+                        items: state.items.concat(newItem),
+                        text: ''
+         }));
+
+     }
+
      render() {
 
       console.log(web3.version); //prints out our current verison of web3
@@ -94,6 +117,23 @@ class App extends Component{
             </form>
             <hr />
             <h1>{this.state.statusMsg}</h1>
+            <div>
+              <h3>TODO</h3>
+              <TodoList items={this.state.items} />
+              <form onSubmit={this.handleSubmit}>
+                <label htmlFor="new-todo">
+                  What needs to be done?
+                </label>
+                <input
+                  id="new-todo"
+                  onChange={this.handleChange}
+                  value={this.state.text}
+                />
+                <button>
+                  Add #{this.state.items.length + 1}
+                </button>
+              </form>
+            </div> 
           </div>
       );
     }
