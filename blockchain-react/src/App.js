@@ -29,7 +29,8 @@ class App extends Component{
             candidateIdxs: [],
             position:'',
             items: [],
-            text: ''
+            text: '',
+            vote: ''
         }
     }
 
@@ -57,21 +58,6 @@ class App extends Component{
         this.setState({position:position});
         this.setState({candidateIdxs:candidateIdxs}); 
     }
-
-    onSubmit = async event => {
-         event.preventDefault(); 
-
-         const accounts = await web3.eth.getAccounts(); 
-         
-         this.setState({statusMsg:'Waiting on transaction success...'});
-        
-         await ballot.methods.createCandidate(this.state.newCandidate).send({
-            from: accounts[0],
-            gas: '3000000'
-         });
-
-         this.setState({statusMsg: 'Candidate List updated!'});
-     };
 
      handleChange = async event => {
          this.setState({ text: event.target.value });
@@ -103,7 +89,13 @@ class App extends Component{
          }));
 
          this.setState({statusMsg: 'Candidate List updated!'});
+     }
 
+     handleVote = async event => {
+         event.preventDefault(); 
+         if(!this.state.vote.length){
+             return;
+         }
 
      }
 
@@ -120,19 +112,16 @@ class App extends Component{
             <p> This ballot is managed by {this.state.voteKeeper}
             </p>
             <hr />
-                <h4> Want to cast your vote?</h4>
+                <h3> Want to cast your vote?</h3>
                 <TodoList items={this.state.items} />
-            <hr />
-            <form onSubmit={this.onSubmit}>
-                <h4> Want to add a candidate? </h4>
-                <div>
-                    <input
-                        value={this.state.newCandidate}
-                        onChange={event => this.setState({newCandidate:event.target.value})}
-                    />
-                </div>
-                <button>Enter</button>
-            </form>
+                <input
+                  id="new-vote"
+                  onChange={this.handleVote}
+                  value={this.state.vote}
+                />
+                <button>
+                  Vote for Candidate!
+                </button>
             <hr />
             <div>
               <h3>Want to add a candidate?</h3>
