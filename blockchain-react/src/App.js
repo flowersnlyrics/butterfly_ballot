@@ -25,14 +25,20 @@ class App extends Component{
             newCandidate: '',
             statusMsg: '', 
             voteKeeper:'',
-            candidates: [],
+            candidateIdxs: [],
+            A: '', 
             position:''
         }
     }
 
     async componentDidMount() {
         const voteKeeper = await ballot.methods.voteKeeper().call();
-        const position   = await ballot.methods.position().call(); 
+        const position   = await ballot.methods.position().call();
+        const candidateIdxs = await ballot.methods.getCandidates().call();
+        
+        // TODO delete
+        const A = await ballot.methods.getCandidate(candidateIdxs[0]).call(); 
+
         //const players = await lottery.methods.getPlayers().call(); 
         //const balance = await web3.eth.getBalance(lottery.options.address); 
         //
@@ -40,41 +46,12 @@ class App extends Component{
         ////we should set our manager with something to start
         //this.setState({manager, players, balance}); //use 2015 syntax 
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
-        this.setState({position:position}); 
+        this.setState({position:position});
+        this.setState({candidateIdxs:candidateIdxs}); 
+        this.setState({A: A[0]}); 
     }
 
-    //onSubmit = async (event) => {
-    //    event.preventDefault(); 
-
-    //    // send a tractions to the enter function 
-    //    const accounts = await web3.eth.getAccounts(); 
-    //    
-    //    // takes 15 to 30 secs to neter lottery 
-    //    this.setState({message: 'Waiting on transaction success...'}); 
-    //    // assume first account is sending transcation
-    //    await lottery.methods.enter().send({
-    //        from: accounts[0],
-    //        value: web3.utils.toWei(this.state.value, 'ether')
-    //    });
-
-    //    this.setState({ message: 'You have been entered!'}); 
-
-    //}
-    
-    // when ever we send a transaction we get no value back 
-   // onClick = async () => {
-   //     const accounts = await web3.eth.getAccounts();
-
-   //     this.setState({message: 'Waiting on transaction success...'}); 
-
-   //     await lottery.methods.pickWinner().send({
-   //         from: accounts[0]
-   //     });
-
-   //     this.setState({message: 'A winner has been picked!'}); 
-   // }
-    //
-     onSubmit = async event => {
+    onSubmit = async event => {
          event.preventDefault(); 
 
          const accounts = await web3.eth.getAccounts(); 
@@ -101,6 +78,9 @@ class App extends Component{
             <h2>Voting Contract for {this.state.position}</h2>
             <p> This ballot is managed by {this.state.voteKeeper}
             </p>
+            <hr />
+                <h4> Want to cast your vote?</h4>
+                <p>{this.state.candidateIdxs[0]} {this.state.A}</p>
             <hr />
             <form onSubmit={this.onSubmit}>
                 <h4> Want to add a candidate? </h4>
