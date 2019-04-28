@@ -26,6 +26,8 @@ class App extends Component{
             newCandidate: '',
             statusMsg: '',
             voteMsg: '',
+            addCandMsg: '',
+            pickWinMsg: '',
             voteKeeper:'',
             candidateIdxs: [],
             position:'',
@@ -58,7 +60,9 @@ class App extends Component{
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
         this.setState({position:position});
         this.setState({candidateIdxs:candidateIdxs});
-        this.setState({voteMsg:'Ready for your vote...'}); 
+        this.setState({voteMsg:'Ready for your vote...'});
+        this.setState({addCandMsg: 'Ready for your candidate...'});
+        this.setState({pickWinMsg: 'Ready to pick a winner...'}); 
     }
 
      handleChange = async event => {
@@ -130,10 +134,17 @@ class App extends Component{
          
          this.setState({statusMsg:'Waiting on transaction success...'});
         
-         await ballot.methods.createCandidate(this.state.text).send({
+         try{
+             await ballot.methods.createCandidate(this.state.text).send({
             from: accounts[0],
             gas: '3000000'
-         });
+           });
+
+           this.setState({addCandMsg: 'Candidate added, thank you vote keeper!'});
+         } catch(e){
+             this.setState({addCandMsg: 'You are not the vote keeper! Candidate not added!!'});
+
+         }
 
          this.setState(state => ({
                         items: state.items.concat(newItem),
@@ -164,6 +175,7 @@ class App extends Component{
             <p> This ballot is managed by {this.state.voteKeeper}
             </p>
             <hr />
+                <h2> Voter Console </h2>
                 <h3> Want to cast your vote?</h3>
                 <TodoList items={this.state.items} />
                 <form onSubmit={this.handleSubmitVote}>
@@ -182,6 +194,7 @@ class App extends Component{
                 </form>
             <hr />
             <div>
+              <h2> Vote Keeper Console </h2>
               <h3>Want to add a candidate?</h3>
               <TodoList items={this.state.items} />
               <form onSubmit={this.handleSubmit}>
@@ -196,6 +209,7 @@ class App extends Component{
                 <button>
                   Add Candidate #{this.state.items.length + 1}
                 </button>
+                <h4>{this.state.addCandMsg}</h4>
               </form>
             </div>
             <hr />
