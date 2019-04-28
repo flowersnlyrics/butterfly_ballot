@@ -19,7 +19,7 @@ beforeEach(async () => {
 
     ballot = await new web3.eth.Contract(JSON.parse(interface))
         .deploy({data: bytecode, arguments: ['President']})
-        .send({from: accounts[0], gas: '4000000' });
+        .send({from: accounts[0], gas: '1000000' });
 });
 
 
@@ -63,7 +63,7 @@ describe('Ballot Contract', () => {
        // need to create a candidate for person to vote for 
        await ballot.methods.createCandidate("Al Gore").send({
            from: accounts[0],
-           gas: '3000000'
+           gas: '1000000'
        });
         
         await ballot.methods.submitVote(0).send({
@@ -87,7 +87,7 @@ describe('Ballot Contract', () => {
         // need to create a candidate for person to vote for 
         await ballot.methods.createCandidate("Al Gore").send({
            from: accounts[0],
-           gas: '3000000'
+           gas: '1000000'
         });
         
         await ballot.methods.submitVote(0).send({
@@ -121,7 +121,7 @@ describe('Ballot Contract', () => {
         // need to create a candidate for person to vote for 
         await ballot.methods.createCandidate("Al Gore").send({
            from: accounts[0],
-           gas: '3000000'
+           gas: '1000000'
         });
         
         await ballot.methods.submitVote(0).send({
@@ -164,7 +164,28 @@ describe('Ballot Contract', () => {
         } 
        
     });
-    
+
+    //
+    // TEST #7
+    // Make sure to create a candidate and retrieve the same
+    // candidate back 
+    //
+    it('Candidate is added to ballot correctly', async() => {
+        
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("Al Gore").send({
+           from: accounts[0],
+           gas: '1000000'
+        });
+        
+        const candidate = await ballot.methods.getCandidate(0).call({
+            from: accounts[0]
+        });
+
+        assert(candidate[0], "Al Gore"); // is, should be 
+
+        
+    });
     //
     // TEST #4
     // Make sure the same account doesn't vote twice 
