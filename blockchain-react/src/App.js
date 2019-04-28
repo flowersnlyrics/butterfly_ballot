@@ -24,7 +24,8 @@ class App extends Component{
 
         this.state = {
             newCandidate: '',
-            statusMsg: '', 
+            statusMsg: '',
+            voteMsg: '',
             voteKeeper:'',
             candidateIdxs: [],
             position:'',
@@ -56,11 +57,43 @@ class App extends Component{
 
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
         this.setState({position:position});
-        this.setState({candidateIdxs:candidateIdxs}); 
+        this.setState({candidateIdxs:candidateIdxs});
+        this.setState({voteMsg:'Ready for your vote...'}); 
     }
 
      handleChange = async event => {
          this.setState({ text: event.target.value });
+     }
+
+     handleChangeOfVote = async event => { 
+        this.setState({ vote: event.target.value[0]});     
+     }
+
+     handleSubmitVote = async event => {
+         event.preventDefault();
+
+         if(!this.state.vote.length){
+
+             return;
+         }
+
+         const candidateIdxs = await ballot.methods.getCandidates().call();
+        
+         //var firstChar = this.state.vote[0]; 
+         //this.setState({vote: firstChar }); 
+
+         for (var i = 0; i < candidateIdxs.length; i++){
+             if(this.state.vote[0] == candidateIdxs[i]){
+                 this.setState({vote: this.state.vote[0]});
+                 // TODO delete after debugging
+                 this.setState({voteMsg: 'Yay that\'s a correct value!'}); 
+                 return; 
+             }
+         }
+
+         // TODO update with a better message
+         this.setState({voteMsg: 'Sorry that\'s not a candidate... Try again!'}); 
+         this.setState({vote:''}); 
      }
 
      handleSubmit = async event => {
@@ -114,14 +147,20 @@ class App extends Component{
             <hr />
                 <h3> Want to cast your vote?</h3>
                 <TodoList items={this.state.items} />
-                <input
-                  id="new-vote"
-                  onChange={this.handleVote}
-                  value={this.state.vote}
-                />
-                <button>
-                  Vote for Candidate!
-                </button>
+                <form onSubmit={this.handleSubmitVote}>
+                  <label htmlFor="new-vote">
+                        Your Vote:
+                  </label>
+                  <input
+                    id="new-vote"
+                    onChange={this.handleChangeOfVote}
+                    value={this.state.vote}
+                  />
+                  <button>
+                    Vote for Candidate!
+                  </button>
+                  <h4>{this.state.voteMsg}</h4>
+                </form>
             <hr />
             <div>
               <h3>Want to add a candidate?</h3>
