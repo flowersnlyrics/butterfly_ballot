@@ -91,6 +91,7 @@ class App extends Component{
                  const accounts = await web3.eth.getAccounts(); 
                  this.setState({statusMsg:'Waiting on vote transaction success...'});
                  
+                 try{
                  await ballot.methods.submitVote(this.state.vote).send({
                     from: accounts[0],
                     gas: '3000000'
@@ -98,7 +99,12 @@ class App extends Component{
                     
                  this.setState({voteMsg: 'Your vote has been processed!'});
                  this.setState({statusMsg: 'Transaction success, thank you for voting!'});
-                 
+                 } catch(e) {
+
+                    this.setState({voteMsg: 'ERROR processing vote: Have you already voted?'});
+                    this.setState({statusMsg: 'Transaction was not processed. You probably already voted.'});  
+
+                 }
                  return; 
 
 
