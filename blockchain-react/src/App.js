@@ -9,29 +9,39 @@ import web3 from './web3';
 import ballot from './ballot'; 
 
 class App extends Component{
-    //constructor(props) {
-    //    super(props); 
-
-    //    this.state = {manager :''}; 
-    //}
-    //replaced by (means the same thing)
     //state = {
+    //      voteKeeper: ''
     //    manager: '',
     //    players: [], 
     //    balance: '',
     //    value: '',
     //    message: ''
-    //}; 
+    //};
+    
+    constructor(props){
+        super(props); 
 
-   // async componentDidMount() {
-   //     const manager = await lottery.methods.manager().call(); 
-   //     const players = await lottery.methods.getPlayers().call(); 
-   //     const balance = await web3.eth.getBalance(lottery.options.address); 
+        this.state = {
+            newCandidate: '',
+            statusMsg: '', 
+            voteKeeper:'',
+            candidates: [],
+            position:''
+        }
+    }
 
-   //     ///this.setState({manager:manager}); 
-   //     //we should set our manager with something to start
-   //     this.setState({manager, players, balance}); //use 2015 syntax 
-   // }
+    async componentDidMount() {
+        const voteKeeper = await ballot.methods.voteKeeper().call();
+        const position   = await ballot.methods.position().call(); 
+        //const players = await lottery.methods.getPlayers().call(); 
+        //const balance = await web3.eth.getBalance(lottery.options.address); 
+        //
+        /////this.setState({manager:manager}); 
+        ////we should set our manager with something to start
+        //this.setState({manager, players, balance}); //use 2015 syntax 
+        this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
+        this.setState({position:position}); 
+    }
 
     //onSubmit = async (event) => {
     //    event.preventDefault(); 
@@ -63,6 +73,19 @@ class App extends Component{
 
    //     this.setState({message: 'A winner has been picked!'}); 
    // }
+    //
+     onSubmit = async event => {
+         event.preventDefault(); 
+
+         const accounts = await web3.eth.getAccounts(); 
+         
+         this.setState({statusMsg:'Waiting on transaction success...'});
+        
+         await ballot.methods.createCandidate(this.state.newCandidate).send({
+            from: accounts[0],
+            gas: '3000000'
+         }); 
+     };
 
      render() {
 
@@ -73,8 +96,20 @@ class App extends Component{
 
       return (
           <div>
-            <h2>Voting Contract</h2>
-            
+            <h2>Voting Contract for {this.state.position}</h2>
+            <p> This ballot is managed by {this.state.voteKeeper}
+            </p>
+            <hr />
+            <form onSubmit={this.onSubmit}>
+                <h4> Want to add a candidate? </h4>
+                <div>
+                    <input
+                        value={this.state.newCandidate}
+                        onChange={event => this.setState({newCandidate:event.target.value})}
+                    />
+                </div>
+                <button>Enter</button>
+            </form>
           </div>
       );
     }
