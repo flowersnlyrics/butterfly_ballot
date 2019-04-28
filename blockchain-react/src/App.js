@@ -74,7 +74,9 @@ class App extends Component{
         else{
             this.setState({voteMsg:'This election is ended, vote won\'t count'});
             this.setState({addCandMsg: 'Old Election, don\'t add candidates'});
-            this.setState({pickWinMsg: 'Old Election, winner already picked'}); 
+            this.setState({pickWinMsg: 'Old Election, winner already picked'});
+            this.setState({winner:winners});
+            this.setState({statusMsg:'ELECTION OVER!'});
         }
     }
 
