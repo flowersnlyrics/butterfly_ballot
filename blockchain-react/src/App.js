@@ -52,18 +52,28 @@ class App extends Component{
                 id: Date.now()
             };
 
-            this.setState(state => ({
+         this.setState(state => ({
                            items: state.items.concat(newItem),
                            text: ''
             }));
         }
 
+        const winners = await ballot.methods.getWinners().call(); 
+        
+      
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
         this.setState({position:position});
         this.setState({candidateIdxs:candidateIdxs});
-        this.setState({voteMsg:'Ready for your vote...'});
-        this.setState({addCandMsg: 'Ready for your candidate...'});
-        this.setState({pickWinMsg: 'Ready to pick a winner...'}); 
+        if(winners.length == 0){
+            this.setState({voteMsg:'Ready for your vote...'});
+            this.setState({addCandMsg: 'Ready for your candidate...'});
+            this.setState({pickWinMsg: 'Ready to pick a winner...'}); 
+        }
+        else{
+            this.setState({voteMsg:'This election is ended, vote won\'t count'});
+            this.setState({addCandMsg: 'Old Election, don\'t add candidates'});
+            this.setState({pickWinMsg: 'Old Election, winner already picked'}); 
+        }
     }
 
      handleChange = async event => {
