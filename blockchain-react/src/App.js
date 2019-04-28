@@ -144,8 +144,8 @@ class App extends Component{
              this.setState({pickWinMsg: 'Winner picked! Thanks to all candidates.'});  
 
         } catch(e){
-            this.setState({statusMsg: 'Only the votekeeper can pick a winner'}); 
-            this.setState({pickWinMsg: 'No winner picked yet'});  
+            this.setState({statusMsg:'Transaction failed, you are not the votekeeper '}); 
+            this.setState({pickWinMsg: 'Only votekeeper can pick a winner'});  
         }
          
      }
