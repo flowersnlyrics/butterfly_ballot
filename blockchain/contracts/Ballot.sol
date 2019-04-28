@@ -1,10 +1,10 @@
 pragma solidity ^0.4.17; 
 
 contract Ballot {
-    
+
     address public voteKeeper; // using public or private enforces no security
     address[] public voters; 
-    string [] public winners; 
+    uint [] public winners; 
     
     string public position; 
     uint   public numCandidates; 
@@ -73,7 +73,7 @@ contract Ballot {
     
     // public or private not used to enforce security
     // require used to enforce security 
-    function pickWinner() public restricted{
+    function pickWinner() public restricted {
         require(msg.sender == voteKeeper); // no one can call this function except the person who created the contract 
       
         uint win_idx = 0;
@@ -84,12 +84,14 @@ contract Ballot {
                 win_idx = i; 
             }
         }
+        winners.push(win_idx) - 1;
         
-        winners.push(candidates[win_idx].name) - 1; 
-        
+
         for(i = 0; i < numCandidates; i++){
             if(candidates[i].votes == candidates[win_idx].votes){
-                winners.push(candidates[i].name); 
+                if(i != win_idx){
+                    winners.push(i)- 1; 
+                }
             }
         }
     }
@@ -102,6 +104,12 @@ contract Ballot {
     function getVoters() public view returns (address[]) {
         return voters; 
     }
+    
+    function getWinners() public view returns (uint[]) {
+        return winners; 
+    }
+    
+
 }
 
 

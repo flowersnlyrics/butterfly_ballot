@@ -216,10 +216,75 @@ describe('Ballot Contract', () => {
         assert(candidate1[0], "George Bush"); // is, should be 
     });
 
-
     //
     // TEST #9
     // Make sure votes are added correcty
+    //
+    it('Make sure votes are added correctly', async() => {
+        
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("Al Gore").send({
+           from: accounts[0],
+           gas: '1000000'
+        });
+
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("George Bush").send({
+           from: accounts[0],
+           gas: '1000000'
+        });
+
+        //account 1 votes for Al Gore
+        //Al Gore : 1
+        await ballot.methods.submitVote(0).send({
+            from: accounts[1],
+            gas: '100000'
+        }); 
+        
+        //account 2 votes for Al Gore
+        //Al Gore : 2
+        await ballot.methods.submitVote(0).send({
+            from: accounts[2],
+            gas: '100000'
+        }); 
+
+        //account 4 votes for Al Gore
+        //Al Gore : 3
+        await ballot.methods.submitVote(0).send({
+            from: accounts[4],
+            gas: '100000'
+        }); 
+
+        //account 3 votes for George Bush
+        //George Bush : 1
+        await ballot.methods.submitVote(1).send({
+            from: accounts[3],
+            gas: '100000'
+        }); 
+
+        //account 5 votes for George Bush
+        //George Bush : 2
+        await ballot.methods.submitVote(1).send({
+            from: accounts[5],
+            gas: '100000'
+        }); 
+
+        const alGore = await ballot.methods.getCandidate(0).call({
+            from: accounts[0]
+        });
+
+        const georgeBush = await ballot.methods.getCandidate(1).call({
+            from: accounts[0]
+        });
+
+        assert(alGore[1], "3"); // Al Gore should have 3 votes 
+        assert(georgeBush[1], "2"); // George Bush should have 2 votes
+
+    })
+
+    //
+    // TEST #10
+    // Make sure App can identify a tie 
     //
 
     it('Make sure votes are added correctly', async() => {
@@ -281,8 +346,93 @@ describe('Ballot Contract', () => {
 
         assert(alGore[1], "3"); // Al Gore should have 3 votes 
         assert(georgeBush[1], "2"); // George Bush should have 2 votes
+
+        await ballot.methods.pickWinner().send({
+            from: accounts[0],
+            gas: '100000'
+        }); 
+
+        const winner = await ballot.methods.getWinners().call({
+            from: accounts[0]
+        });
+
+        assert(winner[0], "0");   // al gore should win 
+        assert.equal(winner.length, 1); // al gore should be the only winner 
+    })
+
+    //
+    // TEST #11
+    // Make sure App can identify a tie 
+    //
+    it('Make sure app can identify a tie', async() => {
+        
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("Al Gore").send({
+           from: accounts[0],
+           gas: '1000000'
+        });
+
+        // need to create a candidate for person to vote for 
+        await ballot.methods.createCandidate("George Bush").send({
+           from: accounts[0],
+           gas: '1000000'
+        });
+
+        //account 1 votes for Al Gore
+        //Al Gore : 1
+        await ballot.methods.submitVote(0).send({
+            from: accounts[1],
+            gas: '100000'
+        }); 
+        
+        //account 2 votes for Al Gore
+        //Al Gore : 2
+        await ballot.methods.submitVote(0).send({
+            from: accounts[2],
+            gas: '100000'
+        }); 
+
+        //account 3 votes for George Bush
+        //George Bush : 1
+        await ballot.methods.submitVote(1).send({
+            from: accounts[3],
+            gas: '100000'
+        }); 
+
+        //account 5 votes for George Bush
+        //George Bush : 2
+        await ballot.methods.submitVote(1).send({
+            from: accounts[5],
+            gas: '100000'
+        }); 
+
+        const alGore = await ballot.methods.getCandidate(0).call({
+            from: accounts[0]
+        });
+
+        const georgeBush = await ballot.methods.getCandidate(1).call({
+            from: accounts[0]
+        });
+
+        assert(alGore[1], "2"); // Al Gore should have 2 votes 
+        assert(georgeBush[1], "2"); // George Bush should have 2 votes
+
+        await ballot.methods.pickWinner().send({
+            from: accounts[0],
+            gas: '100000'
+        }); 
+
+        const winner = await ballot.methods.getWinners().call({
+            from: accounts[0]
+        });
+
+        assert(winner[0], "0");   // al gore should tie  
+        assert(winner[1], "1");   // george bush should tie  
+        assert.equal(winner.length, 2); //there are two winners
+
     });
 
+//
     //
     // TEST #4
     // Make sure the same account doesn't vote twice 
