@@ -84,7 +84,9 @@ class App extends Component{
          await ballot.methods.createCandidate(this.state.newCandidate).send({
             from: accounts[0],
             gas: '3000000'
-         }); 
+         });
+
+         this.setState({statusMsg: 'Candidate List updated!'});
      };
 
      render() {
