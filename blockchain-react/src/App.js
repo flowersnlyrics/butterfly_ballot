@@ -121,6 +121,35 @@ class App extends Component{
          this.setState({vote:''}); 
      }
 
+     handlePickWinner = async event => {
+        event.preventDefault();
+
+
+        const accounts = await web3.eth.getAccounts(); 
+        this.setState({statusMsg:'Waiting on transaction success...'});
+        this.setState({pickWinMsg: 'Sending message to pick a winner...'}); 
+        try {
+             await ballot.methods.pickWinner().send({
+                 from: accounts[0],
+                 gas: '100000'
+             }); 
+
+             const winners = await ballot.methods.getWinners().call({
+                 from: accounts[0]
+             });
+            
+             this.setState({winner: winners}); 
+
+             this.setState({statusMsg:'Transaction success, Election over!'});
+             this.setState({pickWinMsg: 'Winner picked! Thanks to all candidates.'});  
+
+        } catch(e){
+            this.setState({statusMsg: 'Only the votekeeper can pick a winner'}); 
+            this.setState({pickWinMsg: 'No winner picked yet'});  
+        }
+         
+     }
+
      handleSubmit = async event => {
          event.preventDefault(); 
          if(!this.state.text.length){
@@ -226,6 +255,7 @@ class App extends Component{
                 <button>
                     End Ballot
                 </button>
+                <h4>{this.state.pickWinMsg}</h4>
               </form>
             </div>
             <hr />
