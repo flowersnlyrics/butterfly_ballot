@@ -27,7 +27,6 @@ class App extends Component{
             statusMsg: '', 
             voteKeeper:'',
             candidateIdxs: [],
-            A: '', 
             position:'',
             items: [],
             text: ''
@@ -40,18 +39,31 @@ class App extends Component{
         const candidateIdxs = await ballot.methods.getCandidates().call();
         
         // TODO delete
-        const A = await ballot.methods.getCandidate(candidateIdxs[0]).call(); 
 
         //const players = await lottery.methods.getPlayers().call(); 
         //const balance = await web3.eth.getBalance(lottery.options.address); 
         //
         /////this.setState({manager:manager}); 
         ////we should set our manager with something to start
-        //this.setState({manager, players, balance}); //use 2015 syntax 
+        //this.setState({manager, players, balance}); //use 2015 syntax
+        
+         for(var i = 0; i < candidateIdxs.length; i++){
+             
+             var A = await ballot.methods.getCandidate(candidateIdxs[i]).call(); 
+             
+             var newItem = {
+                 text: candidateIdxs[i] + " : " + A[0], 
+                 id: Date.now()
+             };
+            this.setState(state => ({
+                            items: state.items.concat(newItem),
+                            text: ''
+             }));
+         }
+
         this.setState({voteKeeper:voteKeeper}); //use 2015 syntax 
         this.setState({position:position});
         this.setState({candidateIdxs:candidateIdxs}); 
-        this.setState({A: A[0]}); 
     }
 
     onSubmit = async event => {
@@ -103,7 +115,7 @@ class App extends Component{
             </p>
             <hr />
                 <h4> Want to cast your vote?</h4>
-                <p>{this.state.candidateIdxs[0]} {this.state.A}</p>
+                <TodoList items={this.state.items} />
             <hr />
             <form onSubmit={this.onSubmit}>
                 <h4> Want to add a candidate? </h4>
