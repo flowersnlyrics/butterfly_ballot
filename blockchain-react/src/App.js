@@ -86,10 +86,24 @@ class App extends Component{
              text: this.state.items.length + " : " + this.state.text, 
              id: Date.now()
          };
-          this.setState(state => ({
+
+         const accounts = await web3.eth.getAccounts(); 
+         
+         this.setState({statusMsg:'Waiting on transaction success...'});
+
+        
+         await ballot.methods.createCandidate(this.state.text).send({
+            from: accounts[0],
+            gas: '3000000'
+         });
+
+         this.setState(state => ({
                         items: state.items.concat(newItem),
                         text: ''
          }));
+
+         this.setState({statusMsg: 'Candidate List updated!'});
+
 
      }
 
@@ -120,7 +134,6 @@ class App extends Component{
                 <button>Enter</button>
             </form>
             <hr />
-            <h1>{this.state.statusMsg}</h1>
             <div>
               <h3>Want to add a candidate?</h3>
               <TodoList items={this.state.items} />
@@ -137,7 +150,10 @@ class App extends Component{
                   Add Candidate #{this.state.items.length + 1}
                 </button>
               </form>
-            </div> 
+            </div>
+            <hr />
+            <h1> Ethereum Status Console </h1>
+            <h2>{this.state.statusMsg}</h2>
           </div>
       );
     }
