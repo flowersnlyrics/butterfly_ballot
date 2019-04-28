@@ -284,10 +284,10 @@ describe('Ballot Contract', () => {
 
     //
     // TEST #10
-    // Make sure App can identify a tie 
+    // Make sure App can identify a single winner
     //
 
-    it('Make sure votes are added correctly', async() => {
+    it('Make sure App can identify a single winner', async() => {
         
         // need to create a candidate for person to vote for 
         await ballot.methods.createCandidate("Al Gore").send({
