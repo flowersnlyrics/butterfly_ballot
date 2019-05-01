@@ -187,12 +187,15 @@ class App extends Component{
            });
 
            this.setState({addCandMsg: 'Candidate added, thank you vote keeper!'});
-           this.setState({statusMsg: 'Candidate List updated!'});
+        
          } catch(e){
              this.setState({addCandMsg: 'You are not the vote keeper! Candidate not added!!'});
              this.setState({statusMsg: 'Candidate List the same!'});
+             return; 
          }
+        
 
+         this.setState({statusMsg: 'Candidate List updated!'});
          this.setState(state => ({
                         items: state.items.concat(newItem),
                         text: ''
