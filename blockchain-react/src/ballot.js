@@ -6,9 +6,9 @@ import web3 from './web3';
 //
 //const address = '0x0c0A3B67F430AefC1a741d4dF400445D02AB7658';
 //
-//const address = '0xeB30e1F5C364F66350FF0d5a17c6EB40c779040b';
+const address = '0xeB30e1F5C364F66350FF0d5a17c6EB40c779040b';
 //
-const address = '0x1a555555EBF2c9CC5f661A79f29b5B4c4AfdA465' ;
+//const address = '0x1a555555EBF2c9CC5f661A79f29b5B4c4AfdA465' ;
 const abi = [
     {
         "constant":true,
